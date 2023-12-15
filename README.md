@@ -6,16 +6,20 @@
 npm i 
 ```
 При помощи Xampp запустить MYSQL 
+
 В MYSQL загрузить БД из папки "MYSQL"
+
 В папке api/db.js Ввести данные БД
 
 #### `cd api`
 ```bash
-npm run start```
+npm run start
+```
 
 #### `cd client`
 ```bash
-npm run start```
+npm run start
+```
 
 
 
