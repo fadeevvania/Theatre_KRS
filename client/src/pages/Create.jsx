@@ -4,6 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import { useNavigate,Navigate, useLocation,  } from 'react-router-dom';
 import moment from 'moment';
+import { useAuth } from "../context/authContext";
 
 const Create = () => {
   const state = useLocation().state
@@ -11,8 +12,16 @@ const Create = () => {
   const [title, setTitle] = useState(state?.title || "");
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
-  const navigate = useNavigate()
+  const [enviroment,setInviroment] = useState(state?.enviroment ||"");
+  const [time,setTime] = useState(state?.time ||"");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
+  if (!currentUser || currentUser.role !== "admin") {
+    navigate("/login"); // Перенаправление на страницу входа
+    return null;
+  }
   const upload = async () => {
     try {
       const formData = new FormData();
@@ -26,6 +35,12 @@ const Create = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+
+    if (!title || !value || !cat || !file || !time || !enviroment) {
+      setError("Все поля должны быть заполнены");
+      return;
+    }
+
     const imgUrl = await upload();
 
     try {
@@ -35,15 +50,19 @@ const Create = () => {
             desc: value,
             cat,
             img: file ? imgUrl : "",
+            time,
+            enviroment,
           })
         : await axios.post(`/posts/`, {
             title,
             desc: value,
             cat,
             img: file ? imgUrl : "",
+            time,
+            enviroment,
             date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
           });
-          navigate("/")
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -52,28 +71,29 @@ const Create = () => {
   return (
     <div className='add' >
       <div className="content">
-        <input type="text" placeholder='Title' value={title} onChange={e => setTitle(e.target.value)} />
+        <input type="text" placeholder='Название' value={title} onChange={e => setTitle(e.target.value)} />
+        <input type='date' placeholder='Дата' maxLength='50'  value={time} onChange={(e) => setTime(e.target.value)} />
+        <input type='text' placeholder='Место' maxLength='50' value={enviroment} onChange={(e) => setInviroment(e.target.value)} />
+
         <div className="editorContainer">
           <ReactQuill className='editor' theme="snow" value={value} onChange={setValue} />
         </div>
       </div>
       <div className="menu">
         <div className="item">
-          <h1>publish</h1>
-          <span>
-            <b>Status:</b> Draft
-          </span>
-          <span><b>Visibility:</b> Public
+          <h1>Опубликовать</h1>
+          <span><b>Доступ:</b> Публичный
           </span>
           <input style={{ display: "none" }} type="file" id="file" name="" onChange={e => setFile(e.target.files[0])} />
-          <label className='file' htmlFor="file">Upload Image</label>
+          <label className='file' htmlFor="file">Добавить изображение</label>
           <div className="buttons">
-            <button>Save as a draft</button>
-            <button onClick={handleClick} >Publish</button>
+            <button>сохранить в черновик</button>
+            <button onClick={handleClick} >Опубликовать</button>
           </div>
+          <div className="error">{error}</div> {/* Вывод ошибки */}
         </div>
         <div className="item">
-          <h1>Category</h1>
+          <h1>Жанр</h1>
 
           {/*CAT =  категории (Categories) */}
 

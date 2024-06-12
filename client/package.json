@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.3.4",
     "dompurify": "^3.0.1",
+    "express-validator": "^7.1.0",
     "jsdom": "^21.1.1",
     "moment": "^2.29.4",
     "quil": "^1.1.30",

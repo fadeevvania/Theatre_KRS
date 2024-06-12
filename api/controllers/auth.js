@@ -3,12 +3,24 @@ import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 export const register = (req, res) => {
 
+     // Проверка на обязательные поля
+     if (!req.body.username || !req.body.email || !req.body.password) {
+        return res.status(400).json("Все поля должны быть заполнены");
+    }
+
+    // Проверка длины полей
+    if (req.body.username.length < 3 || req.body.username.length > 20) {
+        return res.status(400).json("Логин должен содержаить от 3 до 20 символов");
+    }
+    if (req.body.password.length < 6 || req.body.password.length > 20) {
+        return res.status(400).json("Пароль должен содержать от 6 до 20 символов");
+    }
     // //CHECK EXISTING USER
 
     const q = "SELECT * FROM users WHERE email = ? OR username = ?";
-    db.query(q, [req.body.email, req.body.name], (err, data) => {
+    db.query(q, [req.body.email, req.body.username], (err, data) => {
         if (err) return res.json(err)
-        if (data.length) return res.status(409).json("User already exist");
+        if (data.length) return res.status(409).json("Данный пользователь уже существует");
 
         //Hash the password and create a user
 
@@ -32,9 +44,9 @@ export const login = (req, res) => {
 
     //CHECK USER
 
-    const q = "SELECT*FROM users WHERE username=?"
+    const q = "SELECT*FROM users WHERE email=? OR username=?"
 
-    db.query(q, [req.body.username], (err, data) => {
+    db.query(q, [req.body.email, req.body.username], (err, data) => {
         if (err) return res.json(err);
         if (data.length === 0) return res.status(404).json("User not found!");
 
@@ -45,7 +57,7 @@ export const login = (req, res) => {
         );
 
         if (!isPasswordCorrect) 
-        return res.status(400).json("Wrong username or password!");
+        return res.status(400).json("Неверный логин или пароль");
 
 
         //jsonwebtoken                                  
@@ -70,4 +82,3 @@ export const logout = (req, res) => {
         secure:true
     }).status(200).json("User has beet logget out ")
 }
-

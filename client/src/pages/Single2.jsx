@@ -58,17 +58,14 @@ const Single2 = () => {
             src={post2.userImg}
             alt=""
           />}
-          <div className="info">
-           
-          </div>
-          {/* {currentUser.username === post2.username && ( */}
+          {currentUser?.role === 'admin' && (
             <div className="edit">
               <Link to={`/create2?edit=2`} state={post2}>
                 <img src={Edit} alt="" />
               </Link>
               <img onClick={handleDelete} src={Delete} alt="" />
-            </div>
-          {/* )} */}
+            </div>)}
+
         </div>
         <h1>{post2.name}</h1>
         <p
@@ -81,17 +78,17 @@ const Single2 = () => {
             __html: DOMPurify.sanitize("Возраст: " + post2.age),
           }}
         ></p>
-       <p 
+        <p
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize("Опыт работы: " + post2.exp),
           }}
         ></p>
-        <p 
+        <p
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize("Место работа: " + post2.workplace),
+            __html: DOMPurify.sanitize("Место работы: " + post2.workplace),
           }}
         ></p>
-        <p 
+        <p
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize("Город: " + post2.country),
           }}

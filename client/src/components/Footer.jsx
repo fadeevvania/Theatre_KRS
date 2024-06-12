@@ -4,9 +4,6 @@ const Footer = () => {
   return (
     <footer>
       <img src={Logo} alt=""/>
-      <span>
-        Сделано Ванечкой :D
-      </span>
     </footer>
     )
 }

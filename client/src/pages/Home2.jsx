@@ -8,7 +8,20 @@ const Home2 = () => {
   const [posts2, setPosts2] = useState([])
 
   const cat2 = useLocation().search
-
+  const getCatTranslation = (cat) => {
+    switch (cat) {
+      case "director":
+        return "Режиссер";
+      case "actor":
+        return "Актёр";
+      case "sounder":
+        return "Композитор";
+      case "dubler":
+        return "Дублёр";
+      default:
+        return cat;
+    }
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,23 +45,22 @@ const Home2 = () => {
       <div className="posts2">
         {posts2.map((post2) => (
           <div className="post2" key={post2.id}>
-             <Link className='link' to={`/post2/${post2.id}`}>
+            <Link className='link' to={`/post2/${post2.id}`}>
               <div className="img2">
-              <img src={`../upload/${post2.img}`} alt="" />
-              <div className="bg">
+                <img src={`../upload/${post2.img}`} alt="" />
+                <div className="bg">
+                </div>
               </div>
-            </div>
-            <div className="content2">
-              <div className="name">
-             
-                <h1>{post2.name}</h1>
-              
-              </div>
-              <div className="title">
-              <p>{getText("Возраст"+ post2.age)}</p>
-              <p>{getText(post2.cat2)}</p>
-              </div>
-            </div>
+              <div className="content2">
+                <div className="name">
+                  <br></br>
+                  <h1>{post2.name}</h1>
+                </div>
+                <div className="title">
+                  <p>{getText("Возраст " + post2.age + " ")}</p>
+                  <p>{getText(getCatTranslation(post2.cat2))}</p>
+                </div>
+                </div>
             </Link>
           </div>
         ))}

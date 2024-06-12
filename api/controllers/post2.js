@@ -28,7 +28,9 @@ export const addPost2 = (req, res) => {
   
     jwt.verify(token, "jwtkey", (err, userInfo) => {
       if (err) return res.status(403).json("Token is not valid!");
-  
+      if (userInfo.role === "user") {
+        return res.status(403).json("You don't have permission to add a post!");
+      }
       const q =
         "INSERT INTO posts2(`name`, `age`, `img`, `cat2`, `exp`,`workplace`,`country`, `date`,`desc`,`uid`) VALUES (?)";
   
@@ -57,7 +59,9 @@ export const deletePost2 = (req, res) => {
 
     jwt.verify(token, "jwtkey", (err, userInfo) => {
         if (err) return res.status(403).json("Token is not valid!")
-
+          if (userInfo.role === "user") {
+            return res.status(403).json("You don't have permission to delete a post!");
+          }
         const post2Id = req.params.id;
         const q = "DELETE FROM posts2 WHERE `id` = ? AND `uid`= ?";
 
@@ -74,7 +78,9 @@ export const updatePost2 = (req, res) => {
   
     jwt.verify(token, "jwtkey", (err, userInfo) => {
       if (err) return res.status(403).json("Token is not valid!");
-  
+      if (userInfo.role === "user") {
+        return res.status(403).json("You don't have permission to update a post!");
+      }
       const post2Id = req.params.id;
       const q =
         "UPDATE posts2 SET `name`=?,`age`=?,`img`=?,`cat2`=?, `exp`=?,`workplace`=?,`country`=?,`desc`=? WHERE `id` = ? AND `uid` = ?";

@@ -32,13 +32,13 @@ const handleSubmit = async e =>{
 
   return (
     <div className='auth'>
-        <h1>Login</h1>
+        <h1>Вход</h1>
         <form >
-        <input type="text" placeholder='username' name="username" onChange={handleChange} />
-        <input type="password" placeholder='password' name="password" onChange={handleChange} />
-        <button onClick={handleSubmit}>Login</button>
+        <input type="text" placeholder='Логин или почта' name="username" onChange={handleChange} />
+        <input type="password" placeholder='Пароль' name="password" onChange={handleChange} />
+        <button onClick={handleSubmit}>Войти</button>
         {err && <p>{err}</p>}
-        <span> У вас всё еще нет аккаунта? <Link to="/register">Register</Link></span>
+        <span> У вас еще нет аккаунта? <Link to="/register">Регистрация</Link></span>
         </form>
         </div>
   )

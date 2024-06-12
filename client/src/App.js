@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Create from "./pages/Create";
 import Create2 from "./pages/Create2";
+import Busket from "./pages/Busket";
 // import CreateStaff from "./pages/CreateStaff";
 import Navbar from "./components/Navbar";
 import Navbar2 from "./components/Navbar2";
@@ -64,7 +65,12 @@ const router = createBrowserRouter([
     path: "/create",
     element: <Create/>,
   },
+  {
+    path: "/busket",
+    element: <Busket/>,
+  },
   
+    
 ]
   },
   {
